@@ -1,0 +1,52 @@
+version: '3'
+services:
+  webserver:
+    networks:
+      - my_custom_network
+
+  scheduler:
+    networks:
+      - my_custom_network
+
+  triggerer:
+    networks:
+      - my_custom_network
+
+  postgres:
+    networks:
+      - my_custom_network
+
+  # redis:
+  #   networks:
+  #     - my_custom_network
+  mssql:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    # container_name: mssql22
+    environment:
+      - SA_PASSWORD=w&P,i8]69qO8XN  # Replace with a strong password
+      - ACCEPT_EULA=Y
+    ports:
+      - "1433:1433"
+    networks:
+      - my_custom_network
+    volumes:
+      - sql_data:/var/opt/mssql
+      - ./init-scripts:/var/opt/mssql/scripts
+    command: > 
+        /bin/bash -c "
+        echo 'Log001' &&
+        chmod +x /var/opt/mssql/scripts/run_mssql.sh && 
+        /var/opt/mssql/scripts/run_mssql.sh &&
+        echo 'Log002' &&
+        chmod +x /var/opt/mssql/scripts/restore_db.sh && 
+        /var/opt/mssql/scripts/restore_db.sh &&
+        echo 'Log004'
+        "
+
+volumes:
+  sql_data:
+  
+networks:
+  my_custom_network:
+    name: my_custom_network
+    driver: bridge

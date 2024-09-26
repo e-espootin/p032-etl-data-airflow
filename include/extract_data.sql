@@ -1,0 +1,1 @@
+SELECT top(10) * from AdventureWorksLT2022.SalesLT.Customer
