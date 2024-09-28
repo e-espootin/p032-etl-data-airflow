@@ -2,22 +2,15 @@ from airflow import DAG
 from datetime import datetime, timedelta
 from airflow.decorators import dag, task
 from airflow.models.baseoperator import chain
-from pendulum import datetime
-import pandas as pd
 from airflow.providers.microsoft.mssql.hooks.mssql import MsSqlHook
 from airflow.operators.python_operator import PythonOperator
-import logging
-
 from airflow.providers.amazon.aws.hooks.s3 import S3Hook
-
-
-
-# from airflow.providers.common.sql.operators.sql import SQLExecuteQueryOperator
-#from airflow.providers.microsoft.azure.hooks.azure_data_lake_hook import AzureDataLakeHook
+import logging
+from pendulum import datetime
+import pandas as pd
 
 # get the airflow.task logger
 task_logger = logging.getLogger("airflow.task")
-
 
 # Define the DAG function a set of parameters
 @dag(
