@@ -1,4 +1,6 @@
 version: '3'
+
+
 services:
   webserver:
     networks:
@@ -16,15 +18,15 @@ services:
     networks:
       - my_custom_network
 
-  # redis:
-  #   networks:
-  #     - my_custom_network
+
   mssql:
     image: mcr.microsoft.com/mssql/server:2022-latest
     # container_name: mssql22
     environment:
-      - SA_PASSWORD=w&P,i8]69qO8XN  # test only
+      - SA_PASSWORD=${mssql_password}
       - ACCEPT_EULA=Y
+    env_file:
+      - .env
     ports:
       - "1433:1433"
     networks:
@@ -32,15 +34,16 @@ services:
     volumes:
       - sql_data:/var/opt/mssql
       - ./init-scripts:/var/opt/mssql/scripts
+      #- backup_path:/var/opt/mssql/backup
     command: > 
         /bin/bash -c "
-        echo 'Log001' &&
+        echo 'debug: Log001' &&
         chmod +x /var/opt/mssql/scripts/run_mssql.sh && 
         /var/opt/mssql/scripts/run_mssql.sh &&
-        echo 'Log002' &&
+        echo 'debug: Log002' &&
         chmod +x /var/opt/mssql/scripts/restore_db.sh && 
         /var/opt/mssql/scripts/restore_db.sh &&
-        echo 'Log004'
+        echo 'debug: Log003'
         "
 
 volumes:

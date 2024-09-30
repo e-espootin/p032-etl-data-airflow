@@ -7,16 +7,19 @@
 
 # Wait for SQL Server to start
 sleep 20s
+echo 'restore db...'
+#echo 'mssql_user: ' ${mssql_user}
+#echo 'mssql_password: ' ${mssql_password}
 
 ###
-/opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P 'w&P,i8]69qO8XN' -Q 'select name from sys.databases' -C
+/opt/mssql-tools18/bin/sqlcmd -S localhost -U ${mssql_user} -P ${mssql_password} -Q 'select name from sys.databases' -C
 
 # Restore the database from the backup file
-/opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P "w&P,i8]69qO8XN" -C -Q "RESTORE DATABASE AdventureWorksLT2022 FROM DISK = '/var/opt/mssql/scripts/AdventureWorksLT2022.bak' WITH MOVE 'AdventureWorksLT2022_Data' TO '/var/opt/mssql/data/AdventureWorksLT2022.mdf', MOVE 'AdventureWorksLT2022_Log' TO '/var/opt/mssql/data/YourDatabaseName_log.ldf';"
+/opt/mssql-tools18/bin/sqlcmd -S localhost -U ${mssql_user} -P ${mssql_password} -C -Q "RESTORE DATABASE AdventureWorksLT2022 FROM DISK = '/var/opt/mssql/scripts/AdventureWorksLT2022.bak' WITH MOVE 'AdventureWorksLT2022_Data' TO '/var/opt/mssql/data/AdventureWorksLT2022.mdf', MOVE 'AdventureWorksLT2022_Log' TO '/var/opt/mssql/data/YourDatabaseName_log.ldf';"
 
 
 # test
-/opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P 'w&P,i8]69qO8XN' -Q 'select name from sys.databases' -C
+/opt/mssql-tools18/bin/sqlcmd -S localhost -U ${mssql_user} -P ${mssql_password} -Q 'select name from sys.databases' -C
 
 
 echo 'restore is done!'

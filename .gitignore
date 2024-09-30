@@ -11,4 +11,4 @@ airflow.cfg
 airflow.db
 
 /dags/files/
-/init-script/adventureworkslt2022.bak
+/init-scripts/AdventureWorksLT2022.bak
